@@ -19,16 +19,16 @@ struct tree_node * Insert (int x, struct tree_node *t)
   }
 
   else if (x>t->item){
-    return t->right = Insert(x, t->right);
+    t->right = Insert(x, t->right);
   }
   else if (x<=t->item){
-    return t->left  = Insert(x, t->left);
+    t->left  = Insert(x, t->left);
   }
   return t;
 }
 
 int minValue(struct tree_node* t) {
-  struct tree_node* current = malloc(sizeof(struct tree_node));
+  struct tree_node* current = t;
  
   while (current->left != NULL) {
     current = current->left;
@@ -48,21 +48,33 @@ struct tree_node * Remove (int x, struct tree_node *t) // ikke færdig
   else if (x>t->item){
     t->right = Remove(x, t->right);
   }
-  else {
-    if (t->left == NULL) {
-      struct tree_node* temp = t->right;
+  
+  else{
+  if (t -> left == NULL && t -> right == NULL)
+    {
+      free(t);
+      return NULL;
+    }
+
+    
+  else if (t -> left == NULL || t -> right == NULL)
+    {
+      struct tree_node * temp = NULL; 
+      if (t -> right == NULL)
+        temp = t -> left;
+     
+      else
+        temp = t -> right;
+      
       free(t);
       return temp;
-    }
-  else if (t->right == NULL) {
-      struct tree_node* temp = t->left;
-      free(t);
-      return temp;
-    }
+   }
+  
+
   else {
-    struct tree_node* temp = minValue(t->right);
-    t->item = temp->item;
-    t->right = Remove(temp->item, t->right);
+    int minval = minValue(t->right);
+    t->item = minval;
+    t->right = Remove(minval, t->right);
    }
   }
 
@@ -74,11 +86,12 @@ int Contains (int x, struct tree_node *t)
 {
 
   // Return true if the tree t contains item x. Return false otherwise.
-
-  if (t->item==x){
-    return true;
-  }
-
+    if (t==NULL){
+      return false;
+    }
+    else if (t->item==x){
+      return true;
+    }
     else if (x>t->item){
       return Contains(x, t->right);
     }
@@ -86,9 +99,7 @@ int Contains (int x, struct tree_node *t)
       return Contains(x, t->left);
     }
 
-  if (t==NULL){
-      return false;
-  }
+  
    
 }
 
@@ -96,10 +107,8 @@ int Contains (int x, struct tree_node *t)
 struct tree_node * Initialize (struct tree_node *t)
 {
   // Create an empty tree ??
-  t->item = 0;
-  t->right = NULL;
-  t->left = NULL;
-  return t;
+
+  return t = NULL;
 }
 
 int Empty (struct tree_node *t)

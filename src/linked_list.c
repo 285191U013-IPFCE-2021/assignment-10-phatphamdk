@@ -21,7 +21,7 @@ node *make_node (int v, node * q)
 }
 
 /* free all nodes in the list p */
-void free_list (node * p)
+node * free_list (node * p) //node or void
 {
   node *q = p;
   while (q != NULL)
@@ -30,6 +30,7 @@ void free_list (node * p)
       free (q);
       q = t;
     }
+    return q;
 }
 
 
@@ -49,12 +50,12 @@ int sum_squares (node * p)
 {
     // Add your code for excercise 2
     // You can find the tests in tests.cpp
-    int sum = 0;
+    
     if(p == NULL){
       return 0;
     }
 
-    else if(p->next == NULL){
+    if(p->next == NULL){
       return square(p->value);
     } 
     
@@ -63,13 +64,12 @@ int sum_squares (node * p)
     {
       return square(p->value) + sum_squares(p->next);
     }
-    return sum;
+    
 }
 
 node *map (node * p, int (*f) (int))
 {
     // Add your code for excercise 3
-    return NULL;
     if (p == NULL){
       return NULL;
     }
